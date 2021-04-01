@@ -1,7 +1,6 @@
-/* eslint-disable no-useless-constructor */
 import React, { Component } from 'react';
-import { data }  from '../data';
 import Book from './Book';
+import { connect } from 'react-redux';
 
 class Books extends Component {
     constructor(props) {
@@ -23,7 +22,7 @@ class Books extends Component {
                     </thead>
                     <tbody>
                         {
-                           data.map(book => {
+                           this.props.books.map(book => {
                                console.log(book);
                                return (
                                    <Book key={book.id} book={book}/>
@@ -37,4 +36,10 @@ class Books extends Component {
     }
 }
 
-export default Books;
+const mapStateToProps = state => {
+    return {
+        books: state.booksData.books || [],
+    };
+};
+
+export default connect(mapStateToProps, null)(Books);
