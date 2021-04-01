@@ -11,3 +11,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.App {
+  text-align: center;
+  padding: 10%;
+}
+
+button {
+  margin-right: 20px;
+}
+
+.create-book {
+  text-align: left;
+  padding: 10% 20%;
+}
+
+
