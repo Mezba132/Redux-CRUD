@@ -1,6 +1,30 @@
 import React, { Component } from 'react';
+import { createBook } from '../actions/book.actions';
+import { connect } from 'react-redux'
 
-class createBook extends Component {
+class CreateBook extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            title: '',
+            author: '',
+            year: ''
+        }
+    }
+
+    handleSubmit = e => {
+        e.preventDefault();
+        this.props.onAdd(this.state)
+    }
+
+    handleValueChange = values => e => {
+        this.setState({
+            [values] : e.target.value
+        });
+    }
+
     render() {
         return(
             <div className='create-book'>
@@ -12,6 +36,7 @@ class createBook extends Component {
                             className='form-control'
                             placeholder='Enter Your Title'
                             name='title'
+                            onChange = {this.handleValueChange('title')}
                         />
                     </div>
                     <div className='form-group'>
@@ -20,21 +45,23 @@ class createBook extends Component {
                             type='text' 
                             className='form-control'
                             placeholder='Enter Author Name'
-                            name='Author'
+                            name='author'
+                            onChange = {this.handleValueChange('author')}
                         />
                     </div>
                     <div className='form-group'>
-                    <label>Author</label>
+                    <label>Year</label>
                         <input 
                             type='text' 
                             className='form-control'
-                            placeholder='Enter Author Name'
-                            name='Author'
+                            placeholder='Enter Published Year'
+                            name='year'
+                            onChange = {this.handleValueChange('year')}
                         />
                     </div>
-                    <div>
-                        <button type='submit' className='btn btn-primary'>Submit</button>
-                        <button type='button' className='btn btn-danger'>Cancel</button>
+                    <div className='form-group'>
+                        <button onClick={this.handleSubmit.bind(this)} className='btn btn-primary'>Submit</button>
+                        <button className='btn btn-danger'>Cancel</button>
                     </div>
                 </form>
             </div>
@@ -42,4 +69,18 @@ class createBook extends Component {
     }
 }
 
-export default createBook;
+const mapStateToProps = state => {
+    return {
+
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAdd: book => {
+            dispatch(createBook(book));
+        }
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(CreateBook);

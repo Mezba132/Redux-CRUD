@@ -12,9 +12,9 @@ class Nav extends Component {
 
     render() {
         return(
-            <div>
+            <div >
                 {
-                    this.props.pathname === '/' ? <Link to='/create'>Add New</Link> : ''
+                    this.props.pathname === '/' ? <Link className='nav' to='/create'>Add New</Link> : ''
                 }
             </div>
         )

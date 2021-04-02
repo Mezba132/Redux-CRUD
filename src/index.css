@@ -27,3 +27,11 @@ button {
 }
 
 
+.nav {
+  padding-bottom: 5%;
+  float: right; 
+}
+
+a {
+  text-decoration: none !important;
+}
