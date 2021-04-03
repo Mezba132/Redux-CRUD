@@ -25,6 +25,31 @@ class CreateBook extends Component {
         });
     }
 
+    handleCancelEvent = (e) => {
+        e.preventDefault();
+        this.setState({
+            title: '',
+            author: '',
+            year: ''
+        })
+    }
+
+    componentWillMount() {
+
+        // fetch and set value while edit clicked
+        if(this.props.location && this.props.location.state) {
+            const book = this.props.location.state.book;
+
+            this.setState({
+                id: book._id,
+                title: book.title,
+                author: book.author,
+                year: book.year
+            })
+        }
+
+    }
+
     render() {
             if(this.props.isLoading) {
                 return(
@@ -51,6 +76,7 @@ class CreateBook extends Component {
                                     className='form-control'
                                     placeholder='Enter Your Title'
                                     name='title'
+                                    value={this.state.title}
                                     onChange = {this.handleValueChange('title')}
                                 />
                             </div>
@@ -61,6 +87,7 @@ class CreateBook extends Component {
                                     className='form-control'
                                     placeholder='Enter Author Name'
                                     name='author'
+                                    value={this.state.author}
                                     onChange = {this.handleValueChange('author')}
                                 />
                             </div>
@@ -71,12 +98,13 @@ class CreateBook extends Component {
                                     className='form-control'
                                     placeholder='Enter Published Year'
                                     name='year'
+                                    value={this.state.year}
                                     onChange = {this.handleValueChange('year')}
                                 />
                             </div>
                             <div className='form-group'>
                                 <button onClick={this.handleSubmit.bind(this)} className='btn btn-primary'>Submit</button>
-                                <button className='btn btn-danger'>Cancel</button>
+                                <button onClick={this.handleCancelEvent.bind(this)} className='btn btn-danger'>Cancel</button>
                             </div>
                         </form>
                     </div>

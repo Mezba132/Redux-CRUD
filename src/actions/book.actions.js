@@ -112,7 +112,6 @@ export const fetchBooks = () => {
         dispatch(fetchLoading(isLoading));
         return axios.get('http://localhost:5000/api/read')
         .then(response => {
-            console.log(response.data);
             dispatch(fetchBooksSuccess(response.data));
             isLoading = false;
             dispatch(fetchLoading(isLoading));

@@ -14,7 +14,7 @@ class Nav extends Component {
         return(
             <div >
                 {
-                    this.props.pathname === '/' ? <Link className='nav' to='/create'>Add New</Link> : ''
+                    window.location.pathname === '/' ? <Link className='nav' to='/create'>Add New</Link> : ''
                 }
             </div>
         )

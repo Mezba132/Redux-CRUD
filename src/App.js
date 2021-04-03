@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Books from './components/Books';
+import Books from './containers/Books';
 import CreateBook from './containers/CreateBook';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Nav from './components/Nav';
@@ -33,18 +33,20 @@ class app extends Component {
                     />
                     <Switch>
                         <Route 
-                            path='/' exact>
-                                <Books/>
-                        </Route>
+                            path='/' 
+                            exact
+                            component={() => <Books/>}
+                        />    
                         <Route 
-                            path='/create' exact>
-                                <CreateBook/>
-                        </Route>
+                            path='/create' 
+                            exact
+                            component={() => <CreateBook/>}
+                            />
                         <Route 
-                            path='/edit/:id' exact>
-                                <CreateBook/>
-                        </Route>
-
+                            path='/edit/:id' 
+                            exact
+                            component={(props) => <CreateBook {...props}/>}
+                            />
                     </Switch>
                 </div>
             </Router>
