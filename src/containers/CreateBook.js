@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createBook } from '../actions/book.actions';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 class CreateBook extends Component {
 
@@ -16,7 +16,7 @@ class CreateBook extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        this.props.onAdd(this.state)
+        this.props.onAdd(this.state);
     }
 
     handleValueChange = values => e => {
@@ -26,52 +26,69 @@ class CreateBook extends Component {
     }
 
     render() {
-        return(
-            <div className='create-book'>
-                <form>
-                    <div className='form-group'>
-                        <label>Title</label>
-                        <input 
-                            type='text' 
-                            className='form-control'
-                            placeholder='Enter Your Title'
-                            name='title'
-                            onChange = {this.handleValueChange('title')}
-                        />
+            if(this.props.isLoading) {
+                return(
+                    <div>
+                    <p>LOADING...........</p>
                     </div>
-                    <div className='form-group'>
-                    <label>Author</label>
-                        <input 
-                            type='text' 
-                            className='form-control'
-                            placeholder='Enter Author Name'
-                            name='author'
-                            onChange = {this.handleValueChange('author')}
-                        />
+                )
+            }
+            else if(this.props.error) {
+                return (
+                    <div className='alert alert-danger' role='alert'>
+                        {this.props.error.message}
                     </div>
-                    <div className='form-group'>
-                    <label>Year</label>
-                        <input 
-                            type='text' 
-                            className='form-control'
-                            placeholder='Enter Published Year'
-                            name='year'
-                            onChange = {this.handleValueChange('year')}
-                        />
+                )
+            }
+            else {
+                return (
+                    <div className='create-book'>
+                        <form>
+                            <div className='form-group'>
+                                <label>Title</label>
+                                <input 
+                                    type='text' 
+                                    className='form-control'
+                                    placeholder='Enter Your Title'
+                                    name='title'
+                                    onChange = {this.handleValueChange('title')}
+                                />
+                            </div>
+                            <div className='form-group'>
+                            <label>Author</label>
+                                <input 
+                                    type='text' 
+                                    className='form-control'
+                                    placeholder='Enter Author Name'
+                                    name='author'
+                                    onChange = {this.handleValueChange('author')}
+                                />
+                            </div>
+                            <div className='form-group'>
+                            <label>Year</label>
+                                <input 
+                                    type='text' 
+                                    className='form-control'
+                                    placeholder='Enter Published Year'
+                                    name='year'
+                                    onChange = {this.handleValueChange('year')}
+                                />
+                            </div>
+                            <div className='form-group'>
+                                <button onClick={this.handleSubmit.bind(this)} className='btn btn-primary'>Submit</button>
+                                <button className='btn btn-danger'>Cancel</button>
+                            </div>
+                        </form>
                     </div>
-                    <div className='form-group'>
-                        <button onClick={this.handleSubmit.bind(this)} className='btn btn-primary'>Submit</button>
-                        <button className='btn btn-danger'>Cancel</button>
-                    </div>
-                </form>
-            </div>
-        )
+                )
+            }
     }
 }
 
 const mapStateToProps = state => {
     return {
-
+        isLoading : state.booksData.isLoading,
+        error : state.booksData.error || null
     };
 }
 
