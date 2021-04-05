@@ -51,6 +51,21 @@ const bookReducer = ( state = initialState, action) => {
                 ...state,
                 error: action.payload
             }
+        case EDIT_BOOK_LOADING : 
+            return {
+                ...state,
+                isLoading: action.payload
+            }
+        case EDIT_BOOK_SUCCESS : 
+            return {
+                ...state,
+                books: action.payload
+            }
+        case EDIT_BOOK_ERROR : 
+            return {
+                ...state,
+                error: action.payload
+            }    
         default:
             return state;
     }

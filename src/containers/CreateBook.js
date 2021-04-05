@@ -8,6 +8,7 @@ class CreateBook extends Component {
         super(props);
 
         this.state = {
+            id:0,
             title: '',
             author: '',
             year: ''

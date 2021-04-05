@@ -13,6 +13,7 @@ import {
     FETCH_BOOK_SUCCESS,
 } from './types';
 import axios from 'axios';
+import { history } from '../index'; 
 
 
 //create book -----------------------------------------------------------------------------------------
@@ -31,7 +32,6 @@ export const createBookError = (error) => {
 }
 
 export const createBookLoading = (isLoading) => {
-    debugger;
     return {
         type : ADD_BOOK_LOADING,
         payload : isLoading
@@ -40,47 +40,61 @@ export const createBookLoading = (isLoading) => {
 
 export const createBook = (book) => {
     let isLoading = true;
-    const data = {
-        title: book.title,
-        author: book.author,
-        year: book.year
+    if(book.id) {
+        const data = {
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            year: book.year
+        }
+        return dispatch => {
+            dispatch(editBook(data));
+        }
     }
-
-    return dispatch => {
-        axios.post('http://localhost:5000/api/create', data)
-        .then(response => {
-            dispatch(createBookLoading(isLoading));
-            const id = response.data._id;
-            axios.get(`http://localhost:5000/api/read/`+id)
-                 .then(response => {
-                     const data = response.data;
-                     const normalizedData = {
-                         title : data.title,
-                         author : data.author,
-                         year : data.year
-                     }
-                    dispatch(createBookSuccess(normalizedData));
-                    isLoading = false;
-                    dispatch(createBookLoading(isLoading));
-                 })
-                 .catch(err => {
-                        const errorPayload = [];
-                        errorPayload['message'] = err.response.data.msg;
-                        errorPayload['status'] = err.response.data.status;
-                        dispatch(createBookError(errorPayload));
+    else {
+        const data = {
+            title: book.title,
+            author: book.author,
+            year: book.year
+        }
+    
+        return dispatch => {
+            axios.post('http://localhost:5000/api/create', data)
+            .then(response => {
+                dispatch(createBookLoading(isLoading));
+                const id = response.data._id;
+                axios.get(`http://localhost:5000/api/read/`+id)
+                     .then(response => {
+                         const data = response.data;
+                         const normalizedData = {
+                             title : data.title,
+                             author : data.author,
+                             year : data.year
+                         }
+                        dispatch(createBookSuccess(normalizedData));
+                        history.push('/');
                         isLoading = false;
                         dispatch(createBookLoading(isLoading));
-                    }
-                 )
-        })
-        .catch( err => {
-            const errorPayload = [];
-            errorPayload['message'] = err.response.data.msg;
-            errorPayload['status'] = err.response.data.status;
-            dispatch(createBookError(errorPayload));
-            isLoading=false;
-            dispatch(createBookLoading(isLoading));
-        })
+                     })
+                     .catch(err => {
+                            const errorPayload = [];
+                            errorPayload['message'] = err.response.data.msg;
+                            errorPayload['status'] = err.response.data.status;
+                            dispatch(createBookError(errorPayload));
+                            isLoading = false;
+                            dispatch(createBookLoading(isLoading));
+                        }
+                     )
+            })
+            .catch( err => {
+                const errorPayload = [];
+                errorPayload['message'] = err.response.data.msg;
+                errorPayload['status'] = err.response.data.status;
+                dispatch(createBookError(errorPayload));
+                isLoading=false;
+                dispatch(createBookLoading(isLoading));
+            })
+        }
     }
 }
 
@@ -123,6 +137,61 @@ export const fetchBooks = () => {
             dispatch(fetchBookError(errorPayload));
             isLoading = false;
             dispatch(fetchLoading(isLoading));
+        })
+    }
+}
+
+// edit book ---------------------------------------------------------------------------------------
+export const editBookLoading = (isLoading) => {
+    return {
+        type : EDIT_BOOK_LOADING,
+        payload : isLoading
+    }
+}
+
+export const editBookSuccess = (data) => {
+    return {
+        type: EDIT_BOOK_SUCCESS,
+        payload: data
+    }
+}
+
+export const editBookError = (error) => {
+    return {
+        type: EDIT_BOOK_ERROR,
+        payload: error
+    }
+}
+
+export const editBook = (data) => {
+    const id = data.id;
+    let isLoading = true;
+    return dispatch => {
+        return axios.put('http://localhost:5000/api/edit/'+id, data)
+        .then(() => {
+            return axios.get('http://localhost:5000/api/read/'+id)
+            .then(response => {
+                dispatch(editBookSuccess(response.data));
+                history.push('/');
+                let isLoading = false;
+                dispatch(editBookLoading(isLoading));                
+            })
+            .catch( err => {
+                let errorPayload = [];
+                errorPayload['message'] = err.response.data.msg;
+                errorPayload['status'] = err.response.data.status;
+                dispatch(editBookError(errorPayload));
+                isLoading = false;
+                dispatch(editBookLoading(isLoading));
+            })
+        })
+        .catch(err => {
+            let errorPayload = [];
+            errorPayload['message'] = err.response.data.msg;
+            errorPayload['status'] = err.response.data.status;
+            dispatch(editBookError(errorPayload));
+            isLoading = false;
+            dispatch(editBookLoading(isLoading));
         })
     }
 }
