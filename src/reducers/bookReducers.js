@@ -65,7 +65,23 @@ const bookReducer = ( state = initialState, action) => {
             return {
                 ...state,
                 error: action.payload
-            }    
+            }   
+        case DELETE_BOOK_LOADING : 
+        return {
+            ...state,
+            isLoading: action.payload
+        }
+        case DELETE_BOOK_SUCCESS : 
+            const filteredBooks = state.books.filter(book => book.id !== action.payload)
+            return {
+                ...state,
+                books: filteredBooks,
+            }
+        case DELETE_BOOK_ERROR : 
+            return {
+                ...state,
+                error : action.payload
+            }     
         default:
             return state;
     }

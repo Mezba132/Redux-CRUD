@@ -195,3 +195,47 @@ export const editBook = (data) => {
         })
     }
 }
+
+// Delete Book ----------------------------------------------------------------
+export const deleteBookLoading = (isLoading) => {
+    return {
+        type : DELETE_BOOK_LOADING,
+        payload : isLoading
+    }
+}
+
+export const deleteBookError = (error) => {
+    return {
+        type: DELETE_BOOK_ERROR,
+        payload: error
+    }
+}
+
+export const deleteBookSuccess = (data) => {
+    return {
+        type: FETCH_BOOK_SUCCESS,
+        payload: data
+    }
+}
+
+export const deleteBook = (data) => {
+    let id = data._id;
+    let isLoading = true;
+    return dispatch => {
+        dispatch(deleteBookLoading(isLoading));
+        return axios.delete('http://localhost:5000/api/delete/'+id)
+        .then((response) => {
+                history.push('/');
+                let isLoading = false;
+                dispatch(deleteBookLoading(isLoading));                
+        })
+        .catch(err => {
+            let errorPayload = [];
+            errorPayload['message'] = err.response.data.msg;
+            errorPayload['status'] = err.response.data.status;
+            dispatch(deleteBookError(errorPayload));
+            isLoading = false;
+            dispatch(editBookLoading(isLoading));
+        })
+    }    
+}
