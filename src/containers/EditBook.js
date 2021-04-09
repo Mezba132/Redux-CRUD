@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { createBook } from '../actions/createBook';
+import { editBook } from '../actions/editBook';
 import { connect } from 'react-redux';
 
-class CreateBook extends Component {
+class EditBook extends Component {
 
     constructor(props) {
         super(props);
@@ -17,7 +17,7 @@ class CreateBook extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        this.props.onAdd(this.state);
+        this.props.onEdit(this.state);
     }
 
     handleValueChange = values => e => {
@@ -33,6 +33,24 @@ class CreateBook extends Component {
             author: '',
             year: ''
         })
+    }
+
+    componentWillMount() {
+
+        console.log('[componentWillMount] createBook.js')
+
+        // fetch and set value while edit clicked
+        if(this.props.location && this.props.location.state) {
+            const book = this.props.location.state.book;
+
+            this.setState({
+                id: book._id,
+                title: book.title,
+                author: book.author,
+                year: book.year
+            })
+        }
+
     }
 
     render() {
@@ -88,7 +106,7 @@ class CreateBook extends Component {
                                 />
                             </div>
                             <div className='form-group'>
-                                <button onClick={this.handleSubmit.bind(this)} className='btn btn-primary'>Submit</button>
+                                <button onClick={this.handleSubmit.bind(this)} className='btn btn-primary'>Update</button>
                                 <button onClick={this.handleCancelEvent.bind(this)} className='btn btn-danger'>Cancel</button>
                             </div>
                         </form>
@@ -100,17 +118,17 @@ class CreateBook extends Component {
 
 const mapStateToProps = state => {
     return {
-        isLoading : state.createData.isLoading,
-        error : state.createData.error || null
+        isLoading : state.editData.isLoading,
+        error : state.editData.error || null
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAdd: book => {
-            dispatch(createBook(book));
+        onEdit: book => {
+            dispatch(editBook(book));
         }
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(CreateBook);
+export default connect(mapStateToProps,mapDispatchToProps)(EditBook);

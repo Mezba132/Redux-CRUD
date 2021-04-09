@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Book from '../components/Book';
 import { connect } from 'react-redux';
-import { fetchBooks, deleteBook } from '../actions/book.actions';
+import { deleteBook } from '../actions/deleteBook';
+import { fetchBooks } from '../actions/fetchBooks';
 import { history } from '../index';
 
 class Books extends Component {
@@ -71,9 +72,9 @@ class Books extends Component {
 
 const mapStateToProps = state => {
     return {
-        isLoading : state.booksData.isLoading,
-        books: state.booksData.books || [],
-        error : state.booksData.error || null
+        isLoading : state.fetchData.isLoading,
+        books: state.fetchData.books || [],
+        error : state.fetchData.error || null
     };
 };
 

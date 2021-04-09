@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Books from './containers/Books';
 import CreateBook from './containers/CreateBook';
+import EditBook from './containers/EditBook';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 
@@ -45,7 +46,7 @@ class app extends Component {
                         <Route 
                             path='/edit/:id' 
                             exact
-                            component={(props) => <CreateBook {...props}/>}
+                            component={(props) => <EditBook {...props}/>}
                             />
                     </Switch>
                 </div>

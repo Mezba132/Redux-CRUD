@@ -7,7 +7,7 @@ const Book = ({book, onEdit, onDelete}) => (
                 <td>{book.author}</td>
                 <td>{book.year}</td>
                 <td>
-                    <button onClick={() => onDelete(book)} type='button' className='btn btn-danger'>Delete</button>
+                    <button onClick={() => onDelete(book._id)} type='button' className='btn btn-danger'>Delete</button>
                     <button onClick={() => onEdit(book)} type='button' className='btn btn-info'>Edit</button> 
                 </td>
             </tr>
